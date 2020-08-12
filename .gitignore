@@ -1,2 +1,9 @@
 .idea
 __pycache__
+bunny.py
+/database.db
+./database.db
+/data_cleaning.ipynb
+./data_cleaning.ipynb
+.fuse_hidden00001ecb00000003
+.ipynb_checkpoints

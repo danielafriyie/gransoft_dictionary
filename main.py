@@ -1,18 +1,18 @@
 """
-Gransoft Dictionary.
+main.py is part of Gransoft Dictionary.
 
-This program is free software: you can redistribute it and/or modify
+Gransoft Dictionary is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
+Gransoft Dictionary is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 __appname__ = "GranSoft Dictionary"
 __description__ = "English Dictionary Application"
@@ -20,15 +20,19 @@ __version__ = "1.0"
 __author__ = "Afriyie Daniel"
 __email__ = "afriyiedaniel1@outlook.com"
 __web__ = "http://danielafriyie.top"
+__url__ = "https://github.com/danielafriyie/gransoft_dictionary"
 __license__ = "GNU General Public License (GPL) 3.0"
 __status__ = "Development"
 __maintainer__ = "Afriyie Daniel"
 __copyright__ = "Copyright (c) 2020 - Afriyie Daniel"
 
-from PySide2.QtWidgets import QApplication, QMainWindow, QMessageBox, QCompleter, QWidget
-from PySide2.QtGui import QIcon
-
 import sys
+
+from PySide2.QtWidgets import (
+    QApplication, QMainWindow, QMessageBox, QWidget, QAbstractItemView
+)
+from PySide2.QtGui import QIcon, QFont, QColor
+from PySide2.QtCore import Qt
 
 from base import Ui_MainWindow, Ui_add_new_word, database
 
@@ -67,18 +71,19 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
         self.setupUi(self)
         self.setWindowTitle(__appname__ + ' ' + __version__)
         self.set_icon()
-        self.word_completer()
         self.populate_words_listview()
+
+        self.entries_label.setText('Total Words: ' + str(database.word_count))
+
         self.close_action.triggered.connect(self.close_app_callback)
         self.actionAbout.triggered.connect(self.about_window)
         self.add_new_action.triggered.connect(self.add_new_word_callback)
+        self.search_entry.textEdited.connect(self.search_word)
+        self.words_listview.itemSelectionChanged.connect(self.word_list_view_callback)
 
     def add_new_word_callback(self):
         self.new_word_window = AddNewWordWindow()
         self.new_word_window.show()
-
-    def word_completer(self):
-        self.search_entry.setCompleter(QCompleter(database.all_words))
 
     def set_icon(self):
         icon = QIcon('ui/images/icon.png')
@@ -86,7 +91,7 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
 
     def about_window(self):
         title = __appname__ + ' ' + __version__
-        msg = f'{__appname__}\nVersion: {__version__}\n{__description__}\n\n' \
+        msg = f'{__appname__}\nVersion: {__version__}\n\n' \
               f'Author: {__author__}\nE-mail: {__email__}\nWeb: {__web__}\nLicense: {__license__}' \
               f'\n\n{__copyright__}'
         QMessageBox.about(self, title, msg)
@@ -94,15 +99,56 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
     def populate_words_listview(self):
         self.words_listview.addItems(database.all_words)
 
+    def search_word(self, word=None, scroll_to_top=True):
+        if not word:
+            word = self.search_entry.text()
+        definition = database.search_word(word=word)
+
+        if not self.search_entry.text():
+            self.words_listview.scrollToTop()
+
+        try:
+            self.definition_listview.clear()
+            i, w, w_t, d = definition[0]
+            self.definition_listview.addItem(w)
+            self.definition_listview.addItem('\n')
+            self.definition_listview.addItem(w_t)
+            self.definition_listview.addItem('\n') if w_t else None
+            self.definition_listview.addItem(d)
+
+            item_list = (
+                self.definition_listview.findItems(w, Qt.MatchExactly)[0],
+                self.definition_listview.findItems(w_t, Qt.MatchExactly)[0],
+                self.definition_listview.findItems(d, Qt.MatchExactly)[0]
+            )
+            _w, _t, _d = item_list
+            _w.setFont(QFont('Times', 30, QFont.Bold))
+            _w.setTextColor(QColor.fromRgb(32, 74, 135))
+            _t.setFont(QFont('Helvetica', 15))
+            _t.setTextColor(QColor.fromRgb(76, 32, 32))
+            _d.setFont(QFont('Times', 15, QFont.Normal))
+            _d.setTextColor(QColor.fromRgb(17, 4, 35))
+
+            scroll_pos = self.words_listview.findItems(w, Qt.MatchExactly)[0]
+            if scroll_to_top:
+                self.words_listview.scrollToItem(scroll_pos, QAbstractItemView.PositionAtTop)
+            else:
+                self.words_listview.scrollToItem(scroll_pos, QAbstractItemView.ScrollHint.EnsureVisible)
+
+        except IndexError:
+            self.definition_listview.clear()
+
+    def word_list_view_callback(self):
+        try:
+            word = self.words_listview.selectedItems()[0]
+            self.search_entry.setText(word.text())
+            self.search_word(word=word.text(), scroll_to_top=False)
+        except IndexError:
+            pass
+
     def close_app_callback(self):
-        info = QMessageBox.question(
-            self,
-            'Confirmation',
-            'Do you want to quit GranSoft Dictionary',
-            QMessageBox.Yes | QMessageBox.No
-        )
-        if info is QMessageBox.Yes:
-            self.close()
+        database.close_db()
+        self.close()
 
 
 if __name__ == '__main__':

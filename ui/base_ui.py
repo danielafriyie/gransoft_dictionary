@@ -21,10 +21,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
+        MainWindow.setEnabled(True)
         MainWindow.resize(800, 600)
         icon = QIcon()
         icon.addFile(u":/images/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
+        MainWindow.setStyleSheet(u"margin: 0;\n"
+"padding: 0;")
         self.add_new_action = QAction(MainWindow)
         self.add_new_action.setObjectName(u"add_new_action")
         icon1 = QIcon()
@@ -37,23 +40,30 @@ class Ui_MainWindow(object):
         icon2 = QIcon()
         icon2.addFile(u":/images/images/cancel.jpg", QSize(), QIcon.Normal, QIcon.Off)
         self.close_action.setIcon(icon2)
+        self.actionLicense = QAction(MainWindow)
+        self.actionLicense.setObjectName(u"actionLicense")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
-        self.gridLayout_4 = QGridLayout(self.centralwidget)
-        self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.main_widget = QWidget(self.centralwidget)
-        self.main_widget.setObjectName(u"main_widget")
-        self.gridLayout_3 = QGridLayout(self.main_widget)
+        self.gridLayout_3 = QGridLayout(self.centralwidget)
+        self.gridLayout_3.setSpacing(0)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.words_widget = QWidget(self.main_widget)
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.words_widget = QWidget(self.centralwidget)
         self.words_widget.setObjectName(u"words_widget")
         self.words_widget.setMaximumSize(QSize(200, 16777215))
+        self.words_widget.setStyleSheet(u"margin: 0,0,0,0;\n"
+"padding: 0,0,0,0;\n"
+"spacing: 0,0,0,0;")
         self.gridLayout = QGridLayout(self.words_widget)
+        self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.search_entry = QLineEdit(self.words_widget)
         self.search_entry.setObjectName(u"search_entry")
+        self.search_entry.setMinimumSize(QSize(0, 30))
         self.search_entry.setMaximumSize(QSize(200, 16777215))
+        self.search_entry.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.search_entry, 0, 0, 1, 1)
 
@@ -64,22 +74,31 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.words_listview, 1, 0, 1, 1)
 
 
-        self.gridLayout_3.addWidget(self.words_widget, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.words_widget, 0, 0, 1, 1)
 
-        self.definition_widget = QWidget(self.main_widget)
+        self.definition_widget = QWidget(self.centralwidget)
         self.definition_widget.setObjectName(u"definition_widget")
+        self.definition_widget.setEnabled(True)
+        self.definition_widget.setMaximumSize(QSize(16777212, 16777215))
+        self.definition_widget.setStyleSheet(u"margin: 0;\n"
+"padding: 0;")
         self.gridLayout_2 = QGridLayout(self.definition_widget)
+        self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.definition_listview = QListWidget(self.definition_widget)
         self.definition_listview.setObjectName(u"definition_listview")
+        self.definition_listview.setStyleSheet(u"")
 
         self.gridLayout_2.addWidget(self.definition_listview, 0, 0, 1, 1)
 
 
-        self.gridLayout_3.addWidget(self.definition_widget, 1, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.definition_widget, 0, 1, 1, 1)
 
+        self.entries_label = QLabel(self.centralwidget)
+        self.entries_label.setObjectName(u"entries_label")
 
-        self.gridLayout_4.addWidget(self.main_widget, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.entries_label, 1, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -93,12 +112,16 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.main_toolbar = QToolBar(MainWindow)
+        self.main_toolbar.setObjectName(u"main_toolbar")
+        MainWindow.addToolBar(Qt.TopToolBarArea, self.main_toolbar)
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menuFile.addAction(self.add_new_action)
         self.menuFile.addAction(self.close_action)
         self.menuHelp.addAction(self.actionAbout)
+        self.main_toolbar.addAction(self.add_new_action)
 
         self.retranslateUi(MainWindow)
 
@@ -110,8 +133,11 @@ class Ui_MainWindow(object):
         self.add_new_action.setText(QCoreApplication.translate("MainWindow", u"Add New Word", None))
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.close_action.setText(QCoreApplication.translate("MainWindow", u"Close", None))
+        self.actionLicense.setText(QCoreApplication.translate("MainWindow", u"License", None))
         self.search_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"search", None))
+        self.entries_label.setText("")
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
+        self.main_toolbar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi
 

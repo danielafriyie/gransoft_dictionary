@@ -1,11 +1,24 @@
 """
-Loads dicationary database
+resources.py is part of Gransoft Dictionary.
+
+Gransoft Dictionary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Gransoft Dictionary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import sqlite3 as sq
 import os
 
-from exceptions_.exeptions_ import DictDatabaseDoesNotExist
+from exceptions_ import DictDatabaseDoesNotExist
 
 
 class DictDatabase:
@@ -17,7 +30,7 @@ class DictDatabase:
         if path and default_path:
             raise ValueError('define either \'path\' or \'default\'')
         if not path and not default_path:
-            raise ValueError('both path and default_path not defined')
+            raise ValueError('both path or default_path not defined')
 
         if path:
             _db_path = self.set_db_path(path=path)
@@ -33,7 +46,7 @@ class DictDatabase:
         search for word for database
         :param word: word to look for in the database
         """
-        self._cursor.execute('SELECT * FROM entries WHERE word LIKE \'%s\' LIMIT 1' % word)
+        self._cursor.execute('SELECT * FROM entries WHERE word LIKE "%s" LIMIT 1;' % word)
         return self._cursor.fetchall()
 
     def add_new_word(self, word, word_type, definition):
@@ -43,13 +56,12 @@ class DictDatabase:
         :param word_type: word type eg: noun, adverb, verb, etc.
         :param definition: word definition eg: united -> of unite
         """
-        sql = 'INSERT INTO entries VALUES("%s", "%s", "%s")' % (word, word_type, definition)
-        self._cursor.execute(sql)
+        self._cursor.execute('INSERT INTO entries VALUES(NULL, ?, ?, ?);', (word, word_type, definition))
         self._dict_db.commit()
 
     @property
     def all_words(self):
-        self._cursor.execute('SELECT word FROM entries ORDER BY word ASC')
+        self._cursor.execute('SELECT word FROM entries ORDER BY word ASC;')
         word_list = [i[0] for i in self._cursor.fetchall()]
         return word_list
 
@@ -61,18 +73,30 @@ class DictDatabase:
                 raise DictDatabaseDoesNotExist(f'there\'s no file in << {_path} >>')
             return _path
 
-        default_path = os.path.join(self.BASE_DIR, 'resources/database/_dict.db')
+        default_path = os.path.join(self.BASE_DIR, 'resources/database/database.db')
         if not os.path.isfile(default_path):
             raise DictDatabaseDoesNotExist(f'there\'s no file in << {default_path} >>')
         return default_path
 
+    def custom_query(self, sql):
+        """
+        custom sql query
+        :param sql: sql code to execute
+        :return: sqlite3.fetchall()
+        """
+        self._cursor.execute(sql)
+        return self._cursor.fetchall()
+
+    @property
+    def word_count(self):
+        """total count of words in the database"""
+        self._cursor.execute('SELECT COUNT(word) FROM entries;')
+        return self._cursor.fetchall()[0][0]
+
     def rollback(self):
-        return self._dict_db.rollback()
+        """rollback changes made to the database"""
+        self._dict_db.rollback()
 
     def close_db(self):
         """close the database"""
-        return self._dict_db.close()
-
-
-# d = DictDatabase(default_path=True)
-# print(d.all_words)
+        self._dict_db.close()
