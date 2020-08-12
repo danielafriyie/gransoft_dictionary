@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
+    <normaloff>:/images/images/icon.png</normaloff>:/images/images/icon.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="1" column="0">
+     <widget class="QWidget" name="main_widget" native="true">
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="1" column="0">
+        <widget class="QWidget" name="words_widget" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLineEdit" name="search_entry">
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>search</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QListWidget" name="words_listview">
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QWidget" name="definition_widget" native="true">
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QListWidget" name="definition_listview"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="add_new_action"/>
+    <addaction name="close_action"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="add_new_action">
+   <property name="icon">
+    <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
+     <normaloff>:/images/images/add.jpg</normaloff>:/images/images/add.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Add New Word</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="close_action">
+   <property name="icon">
+    <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
+     <normaloff>:/images/images/cancel.jpg</normaloff>:/images/images/cancel.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="images">
+    <file>images/add.jpg</file>
+    <file>images/apply.png</file>
+    <file>images/apply2.jpg</file>
+    <file>images/cancel.jpg</file>
+    <file>images/update.png</file>
+  </qresource>
+</RCC>
