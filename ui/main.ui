@@ -17,12 +17,14 @@
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
+   <iconset>
     <normaloff>:/images/images/icon.png</normaloff>:/images/images/icon.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">margin: 0;
-padding: 0;</string>
+padding: 0;
+font-family: &quot;Times New Roman&quot;, Times, serif;
+font-size: 18px;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -88,7 +90,8 @@ spacing: 0,0,0,0;</string>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">font-family: &quot;Times New Roman&quot;, Times, serif;
+font-size: 16px;</string>
          </property>
          <property name="placeholderText">
           <string>search</string>
@@ -102,6 +105,10 @@ spacing: 0,0,0,0;</string>
            <width>200</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-family: &quot;Times New Roman&quot;, Times, serif;
+font-size: 16px;</string>
          </property>
         </widget>
        </item>
@@ -142,7 +149,8 @@ padding: 0;</string>
        <item row="0" column="0">
         <widget class="QListWidget" name="definition_listview">
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">font-family: &quot;Times New Roman&quot;, Times, serif;
+font-size: 16px;</string>
          </property>
         </widget>
        </item>
@@ -164,7 +172,7 @@ padding: 0;</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -172,6 +180,8 @@ padding: 0;</string>
      <string>File</string>
     </property>
     <addaction name="add_new_action"/>
+    <addaction name="actionEdit"/>
+    <addaction name="actionDelete"/>
     <addaction name="close_action"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -195,11 +205,13 @@ padding: 0;</string>
     <bool>false</bool>
    </attribute>
    <addaction name="add_new_action"/>
+   <addaction name="actionEdit"/>
+   <addaction name="actionDelete"/>
   </widget>
   <action name="add_new_action">
    <property name="icon">
-    <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
-     <normaloff>:/images/images/add.jpg</normaloff>:/images/images/add.jpg</iconset>
+    <iconset resource="image_icons.qrc">
+     <normaloff>:/icons/images/add.png</normaloff>:/icons/images/add.png</iconset>
    </property>
    <property name="text">
     <string>Add New Word</string>
@@ -212,8 +224,8 @@ padding: 0;</string>
   </action>
   <action name="close_action">
    <property name="icon">
-    <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
-     <normaloff>:/images/images/cancel.jpg</normaloff>:/images/images/cancel.jpg</iconset>
+    <iconset resource="image_icons.qrc">
+     <normaloff>:/icons/images/cancel.jpg</normaloff>:/icons/images/cancel.jpg</iconset>
    </property>
    <property name="text">
     <string>Close</string>
@@ -224,9 +236,27 @@ padding: 0;</string>
     <string>License</string>
    </property>
   </action>
+  <action name="actionEdit">
+   <property name="icon">
+    <iconset resource="image_icons.qrc">
+     <normaloff>:/icons/images/edit.png</normaloff>:/icons/images/edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="image_icons.qrc">
+     <normaloff>:/icons/images/delete.png</normaloff>:/icons/images/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc"/>
+  <include location="image_icons.qrc"/>
  </resources>
  <connections/>
 </ui>

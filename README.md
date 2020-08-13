@@ -1,6 +1,6 @@
 # GranSoft Dictionary
 English Dictionary.<br>
-Provides the option for adding your own words. <br>
+Provides the option for adding, editing, and deleting words. <br>
 
 ## Project Structure
 - **exceptions_**
@@ -22,9 +22,11 @@ Provides the option for adding your own words. <br>
     - `__init__.py`
     - about_window.ui
     - base_ui.py
+    - gransoft_dictionary.ui
     - image_icons.qrc
     - main.ui
     - new_word.ui
+    - new_word_icons.qrc
     - new_word.ui.py
 - `.gitignore`
 - `__init__.py`
@@ -32,6 +34,7 @@ Provides the option for adding your own words. <br>
 - image_icons_rc.py
 - LICENSE
 - main.py
+- new_word_icons_rc.py
 - README.md
 - requirements.txt
 - setup.py
@@ -51,19 +54,21 @@ Provides the option for adding your own words. <br>
 - Run main.py `python main.py`
 
 ## License
-This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+Gransoft Dictionary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    Gransoft Dictionary is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
+    
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 
-## Authors
+## Author
 
-* **Afriyie Daniel** 
+* **Afriyie Daniel**
+
+Hope You Enjoy Using It !!!!

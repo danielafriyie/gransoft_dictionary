@@ -56,17 +56,55 @@ class DictDatabase:
         :param word_type: word type eg: noun, adverb, verb, etc.
         :param definition: word definition eg: united -> of unite
         """
-        self._cursor.execute('INSERT INTO entries VALUES(NULL, ?, ?, ?);', (word, word_type, definition))
+        while True:
+            try:
+                self._cursor.execute('INSERT INTO entries VALUES(NULL, ?, ?, ?);', (word, word_type, definition))
+                break
+            except sq.IntegrityError:
+                try:
+                    match, counter = word[:-3], int(word[-3:][1])
+                    word = f'{match}[{counter + 1}]'
+                except ValueError:
+                    word = f'{word}[2]'
+        self._dict_db.commit()
+
+    def delete_word(self, word):
+        """
+        delete word from database
+        :param word: word to delete from database
+        :return:
+        """
+        self._cursor.execute('DELETE FROM entries WHERE word=?;', (word,))
+        self._dict_db.commit()
+
+    def update_word(self, word, word_type, definition):
+        """
+        update word from database
+        :param word: word to update
+        :param word_type:
+        :param definition:
+        :return:
+        """
+        self._cursor.execute(
+            'UPDATE entries SET wordtype=?, definition=? WHERE word=?;',
+            (word_type, definition, word)
+        )
         self._dict_db.commit()
 
     @property
     def all_words(self):
+        """
+        :return: list of words in the database
+        """
         self._cursor.execute('SELECT word FROM entries ORDER BY word ASC;')
         word_list = [i[0] for i in self._cursor.fetchall()]
         return word_list
 
     def set_db_path(self, path=None):
-        """sets database file path"""
+        """
+        sets database file path
+        :param path: path to database file
+        """
         if path:
             _path = os.path.abspath(path)
             if not os.path.isfile(_path):

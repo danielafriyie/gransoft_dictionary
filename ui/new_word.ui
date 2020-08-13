@@ -13,19 +13,37 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
+  <property name="styleSheet">
+   <string notr="true">margin: 0;
+padding: 0;
+font-family: &quot;Times New Roman&quot;, Times, serif;
+font-size: 16px;</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLineEdit" name="word_entry">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
         <property name="placeholderText">
-         <string>new word</string>
+         <string>word</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="word_type_entry">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
         <property name="placeholderText">
          <string>word type eg: noun</string>
         </property>
@@ -48,37 +66,48 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QWidget" name="widget_3" native="true">
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="cancel_btn">
-        <property name="text">
-         <string>Cancel</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
-          <normaloff>:/images/images/cancel.jpg</normaloff>:/images/images/cancel.jpg</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="save_btn">
-        <property name="text">
-         <string>Save</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc">
-          <normaloff>:/images/images/apply.png</normaloff>:/images/images/apply.png</iconset>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="cancel_btn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset resource="new_word_icons.qrc">
+         <normaloff>:/icons/images/cancel.jpg</normaloff>:/icons/images/cancel.jpg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="save_btn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+       <property name="icon">
+        <iconset resource="new_word_icons.qrc">
+         <normaloff>:/icons/images/apply.png</normaloff>:/icons/images/apply.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <resources>
   <include location="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc"/>
+  <include location="new_word_icons.qrc"/>
  </resources>
  <connections/>
 </ui>

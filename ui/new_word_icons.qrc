@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>images/add.jpg</file>
+    <file>images/add.png</file>
+    <file>images/apply.png</file>
+    <file>images/apply2.jpg</file>
+    <file>images/cancel.jpg</file>
+    <file>images/delete.png</file>
+    <file>images/delete2.png</file>
+    <file>images/edit.png</file>
+    <file>images/icon.ico</file>
+    <file>images/icon.png</file>
+    <file>images/update.png</file>
+  </qresource>
+</RCC>

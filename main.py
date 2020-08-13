@@ -29,6 +29,7 @@ __copyright__ = "Copyright (c) 2020 - Afriyie Daniel"
 try:
     # Include in try/except block if you're also targeting Mac/Linux
     from PySide2.QtWinExtras import QtWin
+
     appid = 'gransoft.gransoftdictionary'
     QtWin.setCurrentProcessExplicitAppUserModelID(appid)
 except ImportError:
@@ -45,13 +46,14 @@ from PySide2.QtCore import Qt
 from base import Ui_MainWindow, Ui_add_new_word, database
 
 
-class AddNewWordWindow(Ui_add_new_word, QWidget):
-    """add new word window"""
+class BaseEditPopUpWindow(Ui_add_new_word, QWidget):
+    """base edit pop up window"""
+    window_title = ''
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.setWindowTitle('Add New Word')
+        self.setWindowTitle(self.window_title)
         self.cancel_btn.clicked.connect(self.clear_entries)
         self.save_btn.clicked.connect(self.save_btn_callback)
 
@@ -63,12 +65,53 @@ class AddNewWordWindow(Ui_add_new_word, QWidget):
         word_type = self.word_type_entry.text()
         definition = self.word_definition_entry.toPlainText()
 
-        if not word or not word_type or not definition:
+        if not word or not definition:
             QMessageBox.about(self, 'Action Required', 'Please fill all the necessary entries!')
             return
         database.add_new_word(word=word, word_type=word_type, definition=definition)
         QMessageBox.about(self, 'Success', '%s added successfully!' % word)
         self.clear_entries()
+
+    def fill_entries(self, word=None, word_type=None, definition=None):
+        """
+        populate word, word type and description entries
+        :param word:
+        :param word_type:
+        :param definition:
+        :return:
+        """
+        self.word_entry.setText(word)
+        self.word_type_entry.setText(word_type)
+        self.word_definition_entry.setText(definition)
+
+
+class AddNewWordWindow(BaseEditPopUpWindow):
+    """add new word window"""
+
+    window_title = 'Add New Word'
+
+
+class EditWordWindow(BaseEditPopUpWindow):
+    """edit word word"""
+
+    window_title = 'Edit Word'
+
+    def save_btn_callback(self):
+        word = self.word_entry.text()
+        word_type = self.word_type_entry.text()
+        definition = self.word_definition_entry.toPlainText()
+
+        if not word or not definition:
+            QMessageBox.about(self, 'Action Required', 'Please fill all the necessary entries!')
+            return
+        database.update_word(word=word, word_type=word_type, definition=definition)
+        QMessageBox.about(self, 'Success', '%s updated successfully!' % word)
+        self.clear_entries()
+        self.close()
+
+        # gd is an object of GransoftDictionary class
+        # it's defined at the bottom
+        gd.search_word(word=word, scroll_to_top=False)
 
 
 class GransoftDictionary(Ui_MainWindow, QMainWindow):
@@ -80,22 +123,78 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
         self.setWindowTitle(__appname__ + ' ' + __version__)
         self.set_icon()
         self.populate_words_listview()
-
-        self.entries_label.setText('Total Words: ' + str(database.word_count))
+        self.total_words_label()
 
         self.close_action.triggered.connect(self.close_app_callback)
         self.actionAbout.triggered.connect(self.about_window)
         self.add_new_action.triggered.connect(self.add_new_word_callback)
+        self.actionDelete.triggered.connect(self.delete_action_callback)
+        self.actionEdit.triggered.connect(self.edit_word_callback)
+        self.actionRefresh.triggered.connect(self.refresh_action_callback)
+        self.actionEdit.triggered.connect(self.edit_word_callback)
         self.search_entry.textEdited.connect(self.search_word)
         self.words_listview.itemSelectionChanged.connect(self.word_list_view_callback)
+        self.actionAbout_Qt.triggered.connect(self.about_qt)
 
     def add_new_word_callback(self):
         self.new_word_window = AddNewWordWindow()
         self.new_word_window.show()
 
+    def edit_word_callback(self):
+        try:
+            word = self.search_entry.text()
+            query_set = database.search_word(word=word)
+            if not query_set:
+                _w = self.words_listview.selectedItems()[0]
+                word = _w.text()
+                query_set = database.search_word(word=word)
+
+            i, w, w_t, d = query_set[0]
+
+            self.edit_word_window = EditWordWindow()
+            self.edit_word_window.fill_entries(word=w, word_type=w_t, definition=d)
+            self.edit_word_window.show()
+        except IndexError:
+            pass
+
+    def info_message(self, *args, title=None, msg=None):
+        arg_list = []
+        for _ in args:
+            arg_list.append('%s')
+        s_arg = ','.join(arg_list)
+
+        if msg:
+            msg = msg % args if args else msg
+
+        if not msg:
+            msg = 'Do you want to delete ' + s_arg % args
+
+        return QMessageBox.question(
+            self,
+            title if title else 'Confirm Delete',
+            msg,
+            QMessageBox.Yes | QMessageBox.No
+        )
+
+    def delete_action_callback(self):
+        try:
+            word = self.words_listview.selectedItems()[0]
+            if self.search_entry.text():
+                if self.info_message(self.search_entry.text()) is QMessageBox.Yes:
+                    database.delete_word(self.search_entry.text())
+            elif word.text():
+                if self.info_message(word.text()) is QMessageBox.Yes:
+                    database.delete_word(word.text())
+            self.refresh_action_callback()
+        except IndexError:
+            QMessageBox.about(self, 'Info', 'Nothing selected!')
+
     def set_icon(self):
         icon = QIcon('ui/images/icon.png')
         self.setWindowIcon(icon)
+
+    def total_words_label(self):
+        self.entries_label.setText('Total Words: ' + str(database.word_count))
 
     def about_window(self):
         title = __appname__ + ' ' + __version__
@@ -104,20 +203,28 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
               f'\n\n{__copyright__}'
         QMessageBox.about(self, title, msg)
 
+    def about_qt(self):
+        QMessageBox.aboutQt(self, 'About Qt - ' + __appname__)
+
     def populate_words_listview(self):
         self.words_listview.addItems(database.all_words)
+
+    def refresh_action_callback(self):
+        self.words_listview.clear()
+        self.populate_words_listview()
+        self.total_words_label()
 
     def search_word(self, word=None, scroll_to_top=True):
         if not word:
             word = self.search_entry.text()
-        definition = database.search_word(word=word)
+        query_set = database.search_word(word=word)
 
         if not self.search_entry.text():
             self.words_listview.scrollToTop()
 
         try:
             self.definition_listview.clear()
-            i, w, w_t, d = definition[0]
+            i, w, w_t, d = query_set[0]
             self.definition_listview.addItem(w)
             self.definition_listview.addItem('\n')
             self.definition_listview.addItem(w_t)
@@ -132,9 +239,9 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
             _w, _t, _d = item_list
             _w.setFont(QFont('Times', 30, QFont.Bold))
             _w.setTextColor(QColor.fromRgb(32, 74, 135))
-            _t.setFont(QFont('Helvetica', 15))
-            _t.setTextColor(QColor.fromRgb(76, 32, 32))
-            _d.setFont(QFont('Times', 15, QFont.Normal))
+            _t.setFont(QFont('Helvetica', 15, QFont.Normal))
+            _t.setTextColor(QColor.fromRgb(17, 4, 35))
+            _d.setFont(QFont('Helvetica', 15, QFont.Normal))
             _d.setTextColor(QColor.fromRgb(17, 4, 35))
 
             scroll_pos = self.words_listview.findItems(w, Qt.MatchExactly)[0]

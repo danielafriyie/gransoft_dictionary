@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main.ui'
+## Form generated from reading UI file 'gransoft_dictionary.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.0
 ##
@@ -26,22 +26,39 @@ class Ui_MainWindow(object):
         icon = QIcon()
         icon.addFile(u":/images/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
-        MainWindow.setStyleSheet(u"margin: 0;\n"
-"padding: 0;")
+        MainWindow.setStyleSheet(u"font-family: \"Times New Roman\", Times, serif;\n"
+"font-size: 16px;")
         self.add_new_action = QAction(MainWindow)
         self.add_new_action.setObjectName(u"add_new_action")
         icon1 = QIcon()
-        icon1.addFile(u":/images/images/add.jpg", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/icons/images/add.png", QSize(), QIcon.Normal, QIcon.Off)
         self.add_new_action.setIcon(icon1)
         self.actionAbout = QAction(MainWindow)
         self.actionAbout.setObjectName(u"actionAbout")
         self.close_action = QAction(MainWindow)
         self.close_action.setObjectName(u"close_action")
         icon2 = QIcon()
-        icon2.addFile(u":/images/images/cancel.jpg", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/icons/images/cancel.jpg", QSize(), QIcon.Normal, QIcon.Off)
         self.close_action.setIcon(icon2)
         self.actionLicense = QAction(MainWindow)
         self.actionLicense.setObjectName(u"actionLicense")
+        self.actionEdit = QAction(MainWindow)
+        self.actionEdit.setObjectName(u"actionEdit")
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/images/edit.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.actionEdit.setIcon(icon3)
+        self.actionDelete = QAction(MainWindow)
+        self.actionDelete.setObjectName(u"actionDelete")
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/images/delete.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.actionDelete.setIcon(icon4)
+        self.actionRefresh = QAction(MainWindow)
+        self.actionRefresh.setObjectName(u"actionRefresh")
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/images/update.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.actionRefresh.setIcon(icon5)
+        self.actionAbout_Qt = QAction(MainWindow)
+        self.actionAbout_Qt.setObjectName(u"actionAbout_Qt")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
@@ -63,13 +80,16 @@ class Ui_MainWindow(object):
         self.search_entry.setObjectName(u"search_entry")
         self.search_entry.setMinimumSize(QSize(0, 30))
         self.search_entry.setMaximumSize(QSize(200, 16777215))
-        self.search_entry.setStyleSheet(u"")
+        self.search_entry.setStyleSheet(u"font-family: \"Times New Roman\", Times, serif;\n"
+"font-size: 16px;")
 
         self.gridLayout.addWidget(self.search_entry, 0, 0, 1, 1)
 
         self.words_listview = QListWidget(self.words_widget)
         self.words_listview.setObjectName(u"words_listview")
         self.words_listview.setMaximumSize(QSize(200, 16777215))
+        self.words_listview.setStyleSheet(u"font-family: \"Times New Roman\", Times, serif;\n"
+"font-size: 16px;")
 
         self.gridLayout.addWidget(self.words_listview, 1, 0, 1, 1)
 
@@ -88,7 +108,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.definition_listview = QListWidget(self.definition_widget)
         self.definition_listview.setObjectName(u"definition_listview")
-        self.definition_listview.setStyleSheet(u"")
+        self.definition_listview.setStyleSheet(u"font-family: \"Times New Roman\", Times, serif;\n"
+"font-size: 16px;")
 
         self.gridLayout_2.addWidget(self.definition_listview, 0, 0, 1, 1)
 
@@ -103,7 +124,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 22))
+        self.menubar.setGeometry(QRect(0, 0, 800, 24))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menubar)
@@ -119,9 +140,17 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menuFile.addAction(self.add_new_action)
+        self.menuFile.addAction(self.actionEdit)
+        self.menuFile.addAction(self.actionDelete)
+        self.menuFile.addAction(self.actionRefresh)
+        self.menuFile.addSeparator()
         self.menuFile.addAction(self.close_action)
         self.menuHelp.addAction(self.actionAbout)
+        self.menuHelp.addAction(self.actionAbout_Qt)
         self.main_toolbar.addAction(self.add_new_action)
+        self.main_toolbar.addAction(self.actionEdit)
+        self.main_toolbar.addAction(self.actionDelete)
+        self.main_toolbar.addAction(self.actionRefresh)
 
         self.retranslateUi(MainWindow)
 
@@ -134,6 +163,10 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.close_action.setText(QCoreApplication.translate("MainWindow", u"Close", None))
         self.actionLicense.setText(QCoreApplication.translate("MainWindow", u"License", None))
+        self.actionEdit.setText(QCoreApplication.translate("MainWindow", u"Edit", None))
+        self.actionDelete.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
+        self.actionRefresh.setText(QCoreApplication.translate("MainWindow", u"Refresh", None))
+        self.actionAbout_Qt.setText(QCoreApplication.translate("MainWindow", u"About Qt", None))
         self.search_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"search", None))
         self.entries_label.setText("")
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
