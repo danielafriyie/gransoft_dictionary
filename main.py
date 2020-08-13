@@ -26,6 +26,14 @@ __status__ = "Development"
 __maintainer__ = "Afriyie Daniel"
 __copyright__ = "Copyright (c) 2020 - Afriyie Daniel"
 
+try:
+    # Include in try/except block if you're also targeting Mac/Linux
+    from PySide2.QtWinExtras import QtWin
+    appid = 'gransoft.gransoftdictionary'
+    QtWin.setCurrentProcessExplicitAppUserModelID(appid)
+except ImportError:
+    pass
+
 import sys
 
 from PySide2.QtWidgets import (

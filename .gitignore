@@ -7,3 +7,6 @@ bunny.py
 ./data_cleaning.ipynb
 .fuse_hidden00001ecb00000003
 .ipynb_checkpoints
+main.spec
+dist
+build
