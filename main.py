@@ -16,7 +16,7 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 __appname__ = "GranSoft Dictionary"
 __description__ = "English Dictionary Application"
-__version__ = "1.0"
+__version__ = "1.0.0"
 __author__ = "Afriyie Daniel"
 __email__ = "afriyiedaniel1@outlook.com"
 __web__ = "http://danielafriyie.top"
@@ -124,6 +124,7 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
         self.set_icon()
         self.populate_words_listview()
         self.total_words_label()
+        self.definition_listview.setWordWrap(True)
 
         self.close_action.triggered.connect(self.close_app_callback)
         self.actionAbout.triggered.connect(self.about_window)
