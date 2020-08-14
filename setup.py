@@ -19,12 +19,21 @@ setuptools.setup(
     description=__description__,
     long_description=long_description,
     long_description_content_type="text/markdown",
+    install_requires=[],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
         "Intended Audience :: End Users/Desktop",
+    ],
+    entry_points={
+        'gui_scripts': ['gransoft_dictionary = main:main']
+    },
+    include_package_data=True,
+    data_files=[
+        ('resources/database', ['resources/database/database.db']),
+        ('ui/images', ['ui/images/*.jpg', 'ui/images/*.png', 'ui/images/*.ico'])
     ],
     python_requires='>=3.7',
 )

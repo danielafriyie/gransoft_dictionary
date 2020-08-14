@@ -267,8 +267,14 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
         self.close()
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    gd = GransoftDictionary()
+app = QApplication(sys.argv)
+gd = GransoftDictionary()
+
+
+def main():
     gd.show()
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()
