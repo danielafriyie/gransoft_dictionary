@@ -16,7 +16,7 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 __appname__ = "GranSoft Dictionary"
 __description__ = "English Dictionary Application"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __author__ = "Afriyie Daniel"
 __email__ = "afriyiedaniel1@outlook.com"
 __web__ = "http://danielafriyie.top"
@@ -44,6 +44,8 @@ from PySide2.QtGui import QIcon, QFont, QColor
 from PySide2.QtCore import Qt
 
 from base import Ui_MainWindow, Ui_add_new_word, database
+
+from logger import logger
 
 
 class BaseEditPopUpWindow(Ui_add_new_word, QWidget):
@@ -155,8 +157,8 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
             self.edit_word_window = EditWordWindow()
             self.edit_word_window.fill_entries(word=w, word_type=w_t, definition=d)
             self.edit_word_window.show()
-        except IndexError:
-            pass
+        except IndexError as e:
+            logger().exception(e)
 
     def info_message(self, *args, title=None, msg=None):
         arg_list = []
@@ -187,8 +189,8 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
                 if self.info_message(word.text()) is QMessageBox.Yes:
                     database.delete_word(word.text())
             self.refresh_action_callback()
-        except IndexError:
-            QMessageBox.about(self, 'Info', 'Nothing selected!')
+        except IndexError as e:
+            logger().exception(e)
 
     def set_icon(self):
         icon = QIcon('ui/images/icon.png')
@@ -251,30 +253,25 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
             else:
                 self.words_listview.scrollToItem(scroll_pos, QAbstractItemView.ScrollHint.EnsureVisible)
 
-        except IndexError:
+        except IndexError as e:
             self.definition_listview.clear()
+            logger().exception(e)
 
     def word_list_view_callback(self):
         try:
             word = self.words_listview.selectedItems()[0]
             self.search_entry.setText(word.text())
             self.search_word(word=word.text(), scroll_to_top=False)
-        except IndexError:
-            pass
+        except IndexError as e:
+            logger().exception(e)
 
     def close_app_callback(self):
         database.close_db()
         self.close()
 
 
-app = QApplication(sys.argv)
-gd = GransoftDictionary()
-
-
-def main():
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    gd = GransoftDictionary()
     gd.show()
     sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()

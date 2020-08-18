@@ -33,6 +33,7 @@ Provides the option for adding, editing, and deleting words. <br>
 - base.py
 - image_icons_rc.py
 - LICENSE
+- logger.py
 - main.py
 - new_word_icons_rc.py
 - README.md

@@ -17,8 +17,10 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 
 import sqlite3 as sq
 import os
+from difflib import get_close_matches
 
 from exceptions_ import DictDatabaseDoesNotExist
+from logger import logger
 
 
 class DictDatabase:
@@ -43,11 +45,16 @@ class DictDatabase:
 
     def search_word(self, word):
         """
-        search for word for database
+        search for word in the database
         :param word: word to look for in the database
         """
-        self._cursor.execute('SELECT * FROM entries WHERE word LIKE "%s" LIMIT 1;' % word)
-        return self._cursor.fetchall()
+        self._cursor.execute(f'SELECT * FROM entries WHERE wordentries LIKE "{word}" LIMIT 1;')
+        query_set = self._cursor.fetchall()
+
+        if not query_set:
+            self._cursor.execute(f'SELECT * FROM entries WHERE wordentries LIKE "{word}%" LIMIT 1;')
+            query_set = self._cursor.fetchall()
+        return query_set
 
     def add_new_word(self, word, word_type, definition):
         """
@@ -74,7 +81,7 @@ class DictDatabase:
         :param word: word to delete from database
         :return:
         """
-        self._cursor.execute('DELETE FROM entries WHERE word=?;', (word,))
+        self._cursor.execute('DELETE FROM entries WHERE wordentries=?;', (word,))
         self._dict_db.commit()
 
     def update_word(self, word, word_type, definition):
@@ -86,7 +93,7 @@ class DictDatabase:
         :return:
         """
         self._cursor.execute(
-            'UPDATE entries SET wordtype=?, definition=? WHERE word=?;',
+            'UPDATE entries SET wordtype=?, definition=? WHERE wordentries=?;',
             (word_type, definition, word)
         )
         self._dict_db.commit()
@@ -94,11 +101,11 @@ class DictDatabase:
     @property
     def all_words(self):
         """
-        :return: list of words in the database
+        :return: generator object
         """
-        self._cursor.execute('SELECT word FROM entries ORDER BY word ASC;')
-        word_list = [i[0] for i in self._cursor.fetchall()]
-        return word_list
+        self._cursor.execute('SELECT wordentries FROM entries ORDER BY wordentries ASC;')
+        for word in self._cursor.fetchall():
+            yield word[0]
 
     def set_db_path(self, path=None):
         """
@@ -108,11 +115,13 @@ class DictDatabase:
         if path:
             _path = os.path.abspath(path)
             if not os.path.isfile(_path):
+                logger().error(f'there\'s no file in << {_path} >>')
                 raise DictDatabaseDoesNotExist(f'there\'s no file in << {_path} >>')
             return _path
 
         default_path = os.path.join(self.BASE_DIR, 'resources/database/database.db')
         if not os.path.isfile(default_path):
+            logger().error(f'there\'s no file in << {default_path} >>')
             raise DictDatabaseDoesNotExist(f'there\'s no file in << {default_path} >>')
         return default_path
 
@@ -128,7 +137,7 @@ class DictDatabase:
     @property
     def word_count(self):
         """total count of words in the database"""
-        self._cursor.execute('SELECT COUNT(word) FROM entries;')
+        self._cursor.execute('SELECT COUNT(wordentries) FROM entries;')
         return self._cursor.fetchall()[0][0]
 
     def rollback(self):

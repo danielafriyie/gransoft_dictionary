@@ -27,9 +27,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Intended Audience :: End Users/Desktop",
     ],
-    entry_points={
-        'gui_scripts': ['gransoft_dictionary = main:main']
-    },
     include_package_data=True,
     data_files=[
         ('resources/database', ['resources/database/database.db']),

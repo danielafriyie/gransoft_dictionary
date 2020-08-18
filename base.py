@@ -16,7 +16,7 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 # exceptions package
-from exceptions_.exeptions_ import DictDatabaseDoesNotExist
+from exceptions_ import DictDatabaseDoesNotExist
 
 # resources package
 from resources import DictDatabase
