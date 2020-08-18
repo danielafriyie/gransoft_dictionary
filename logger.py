@@ -49,6 +49,6 @@ class BaseLogger:
         return self._logger
 
 
-def logger():
-    _logger = BaseLogger()
+def logger(*args, **kwargs):
+    _logger = BaseLogger(*args, **kwargs)
     return _logger()
