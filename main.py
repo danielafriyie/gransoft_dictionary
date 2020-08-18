@@ -56,11 +56,15 @@ class BaseEditPopUpWindow(Ui_add_new_word, QWidget):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.setWindowTitle(self.window_title)
+        self.set_icon()
         self.cancel_btn.clicked.connect(self.clear_entries)
         self.save_btn.clicked.connect(self.save_btn_callback)
 
     def clear_entries(self):
         self.word_entry.clear(), self.word_type_entry.clear(), self.word_definition_entry.clear()
+
+    def set_icon(self):
+        self.setWindowIcon(QIcon('ui/images/icon.png'))
 
     def save_btn_callback(self):
         word = self.word_entry.text()
@@ -193,8 +197,7 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
             logger().exception(e)
 
     def set_icon(self):
-        icon = QIcon('ui/images/icon.png')
-        self.setWindowIcon(icon)
+        self.setWindowIcon(QIcon('ui/images/icon.png'))
 
     def total_words_label(self):
         self.entries_label.setText('Total Words: ' + str(database.word_count))
