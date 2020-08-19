@@ -1,37 +1,75 @@
-## Welcome to GitHub Pages
+# GranSoft Dictionary
+English Dictionary.<br>
+Provides the option for adding, editing, and deleting words. <br>
 
-You can use the [editor on GitHub](https://github.com/danielafriyie/gransoft_dictionary/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Project Structure
+- **exceptions_**
+    - `__init__.py`
+    - exeptions_.py
+- **resources**
+    - **database**
+        - database.db
+        - _dict.db
+    - `__init__.py`
+    - resources.py
+- **tests**
+    - `__init__.py`
+    - _test.db
+    - add.jpg
+    - test_resources.py
+- **ui**
+    - **images**
+    - `__init__.py`
+    - about_window.ui
+    - base_ui.py
+    - gransoft_dictionary.ui
+    - image_icons.qrc
+    - main.ui
+    - new_word.ui
+    - new_word_icons.qrc
+    - new_word.ui.py
+- `.gitignore`
+- `__init__.py`
+- base.py
+- image_icons_rc.py
+- LICENSE
+- logger.py
+- main.py
+- new_word_icons_rc.py
+- README.md
+- requirements.txt
+- setup.py
+    
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Prerequisites
+1. python3 
+2. pip3
+3. Pyside2
+4. shiboken2
 
-### Markdown
+## Installation
+- Clone this repo. `git clone <repo-url>`
+- Create a virtualenv. `python3 -m venv <name>`
+- Activate it. `Linux/Mac source <name>/bin/activate, Windows .\<name>\bin\activate`
+- Install requirements. `pip install -r requirements.txt`
+- Run main.py `python main.py`
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## License
+Gransoft Dictionary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-```markdown
-Syntax highlighted code block
+    Gransoft Dictionary is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 
-# Header 1
-## Header 2
-### Header 3
+## Author
 
-- Bulleted
-- List
+* **Afriyie Daniel**
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/danielafriyie/gransoft_dictionary/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Hope You Enjoy Using It !!!!
