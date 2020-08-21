@@ -16,7 +16,7 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 __appname__ = "GranSoft Dictionary"
 __description__ = "English Dictionary Application"
-__version__ = "1.1.0"
+__version__ = "1.2"
 __author__ = "Afriyie Daniel"
 __email__ = "afriyiedaniel1@outlook.com"
 __web__ = "http://danielafriyie.top"
@@ -36,12 +36,13 @@ except ImportError:
     pass
 
 import sys
+import os
 
 from PySide2.QtWidgets import (
-    QApplication, QMainWindow, QMessageBox, QWidget, QAbstractItemView
+    QApplication, QMainWindow, QMessageBox, QWidget, QAbstractItemView, QFileDialog
 )
 from PySide2.QtGui import QIcon, QFont, QColor
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, QFileInfo
 
 from base import Ui_MainWindow, Ui_add_new_word, database
 
@@ -142,6 +143,16 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
         self.search_entry.textEdited.connect(self.search_word)
         self.words_listview.itemSelectionChanged.connect(self.word_list_view_callback)
         self.actionAbout_Qt.triggered.connect(self.about_qt)
+        self.actionBackup.triggered.connect(self.action_backup_callback)
+        self.actionLoad.triggered.connect(self.action_load_callback)
+
+        self.add_new_action.setShortcut('Ctrl+N')
+        self.actionEdit.setShortcut('Ctrl+E')
+        self.actionDelete.setShortcut('Ctrl+D')
+        self.actionRefresh.setShortcut('Ctrl+R')
+        self.actionBackup.setShortcut('Ctrl+B')
+        self.close_action.setShortcut('Ctrl+Q')
+        self.actionLoad.setShortcut('Ctrl+L')
 
     def add_new_word_callback(self):
         self.new_word_window = AddNewWordWindow()
@@ -205,7 +216,7 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
     def about_window(self):
         title = __appname__ + ' ' + __version__
         msg = f'{__appname__}\nVersion: {__version__}\n\n' \
-              f'Author: {__author__}\nE-mail: {__email__}\nWeb: {__web__}\nLicense: {__license__}' \
+              f'Author: {__author__}\nE-mail: {__email__}\nURL: {__url__}\nLicense: {__license__}' \
               f'\n\n{__copyright__}'
         QMessageBox.about(self, title, msg)
 
@@ -243,11 +254,11 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
                 self.definition_listview.findItems(d, Qt.MatchExactly)[0]
             )
             _w, _t, _d = item_list
-            _w.setFont(QFont('Times', 30, QFont.Bold))
+            _w.setFont(QFont('Times', 20, QFont.Bold))
             _w.setTextColor(QColor.fromRgb(32, 74, 135))
-            _t.setFont(QFont('Helvetica', 15, QFont.Normal))
+            _t.setFont(QFont('Helvetica', 11, QFont.Normal))
             _t.setTextColor(QColor.fromRgb(17, 4, 35))
-            _d.setFont(QFont('Helvetica', 15, QFont.Normal))
+            _d.setFont(QFont('Helvetica', 11, QFont.Normal))
             _d.setTextColor(QColor.fromRgb(17, 4, 35))
 
             scroll_pos = self.words_listview.findItems(w, Qt.MatchExactly)[0]
@@ -267,6 +278,34 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
             self.search_word(word=word.text(), scroll_to_top=False)
         except IndexError as e:
             logger().exception(e)
+
+    def action_backup_callback(self):
+        if sys.platform.lower() == 'win32':
+            home_dir = os.path.join(os.path.expanduser('~'), 'documents')
+        else:
+            home_dir = os.path.expanduser('~')
+
+        file_name, _ = QFileDialog.getSaveFileName(
+            self, 'Backup Database', home_dir, 'Database file (*.db);; All files(*)'
+        )
+
+        if not QFileInfo(file_name).suffix():
+            file_name += '.db'
+
+        path, name = QFileInfo(file_name).path(), QFileInfo(file_name).fileName()
+        database.backup_db(path=path, backup_name=name)
+
+    def action_load_callback(self):
+        if sys.platform.lower() == 'win32':
+            home_dir = os.path.join(os.path.expanduser('~'), 'documents')
+        else:
+            home_dir = os.path.expanduser('~')
+
+        file, _ = QFileDialog.getOpenFileName(
+            self, 'Load Database', home_dir, 'Database file (*.db *.sqlite *.sqlite3);; All files(*)',
+        )
+        database.restore_backup(file)
+        self.refresh_action_callback()
 
     def close_app_callback(self):
         database.close_db()

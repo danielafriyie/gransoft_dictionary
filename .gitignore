@@ -16,3 +16,9 @@ packaging
 install.spec
 event_log
 ./event_log
+installer.iss
+installation_info.txt
+installation info.txt
+.db
+resources/database/temp
+temp

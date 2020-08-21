@@ -6,9 +6,10 @@ class BaseLogger:
     """
     Base Logger class
     """
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
     def __init__(self, name=None, fmt=None):
-        self._path = 'event_log'
+        self._path = os.path.join(self.BASE_DIR, 'event_log')
         if not os.path.exists(self._path):
             os.mkdir(self._path)
 
@@ -20,7 +21,7 @@ class BaseLogger:
 
         self._log_file_manager()
 
-        formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+        formatter = logging.Formatter(self.fmt)
         file_handler = logging.FileHandler(f'{self._path}/event.log')
         file_handler.setFormatter(formatter)
         file_handler.setLevel(logging.ERROR)
@@ -33,11 +34,10 @@ class BaseLogger:
 
     def _log_file_manager(self):
         """
-        check if the log file in more than 10mb the it deletes it
+        check if the log file is more than 10mb then it deletes it
         :return:
         """
         _path = f'{self._path}/event.log'
-
         if os.path.exists(_path):
             if os.path.getsize(_path) > 10485760:
                 try:

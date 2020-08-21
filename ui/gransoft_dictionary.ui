@@ -170,7 +170,7 @@ font-size: 16px;</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -181,6 +181,8 @@ font-size: 16px;</string>
     <addaction name="actionEdit"/>
     <addaction name="actionDelete"/>
     <addaction name="actionRefresh"/>
+    <addaction name="actionBackup"/>
+    <addaction name="actionLoad"/>
     <addaction name="separator"/>
     <addaction name="close_action"/>
    </widget>
@@ -209,6 +211,8 @@ font-size: 16px;</string>
    <addaction name="actionEdit"/>
    <addaction name="actionDelete"/>
    <addaction name="actionRefresh"/>
+   <addaction name="actionBackup"/>
+   <addaction name="actionLoad"/>
   </widget>
   <action name="add_new_action">
    <property name="icon">
@@ -268,6 +272,24 @@ font-size: 16px;</string>
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionBackup">
+   <property name="icon">
+    <iconset resource="image_icons.qrc">
+     <normaloff>:/icons/images/backup.jpg</normaloff>:/icons/images/backup.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Backup</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="icon">
+    <iconset resource="image_icons.qrc">
+     <normaloff>:/icons/images/load.png</normaloff>:/icons/images/load.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load</string>
    </property>
   </action>
  </widget>

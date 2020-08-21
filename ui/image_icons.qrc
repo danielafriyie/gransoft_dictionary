@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>images/load.png</file>
+    <file>images/backup.jpg</file>
     <file>images/add.jpg</file>
     <file>images/add.png</file>
     <file>images/apply.png</file>

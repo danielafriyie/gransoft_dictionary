@@ -17,10 +17,13 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 
 import sqlite3 as sq
 import os
-from difflib import get_close_matches
+import sys
+from shutil import copy, rmtree
 
 from exceptions_ import DictDatabaseDoesNotExist
 from logger import logger
+
+from PySide2.QtCore import QFileInfo
 
 
 class DictDatabase:
@@ -30,17 +33,16 @@ class DictDatabase:
 
     def __init__(self, path=None, default_path=False):
         if path and default_path:
-            raise ValueError('define either \'path\' or \'default\'')
+            raise ValueError('define either \'path\' or \'default_path\'')
         if not path and not default_path:
             raise ValueError('both path or default_path not defined')
 
         if path:
-            _db_path = self.set_db_path(path=path)
+            self._db_path = self.set_db_path(path=path)
         else:
-            _db_path = self.set_db_path()
+            self._db_path = self.set_db_path()
 
-        self._dict_db = sq.connect(_db_path)
-        self._dict_db.commit()
+        self._dict_db = sq.connect(self._db_path)
         self._cursor = self._dict_db.cursor()
 
     def search_word(self, word):
@@ -133,6 +135,63 @@ class DictDatabase:
         """
         self._cursor.execute(sql)
         return self._cursor.fetchall()
+
+    def backup_db(self, path=None, backup_name=None):
+        """
+        takes backup of the database
+        :param path: path to save backup
+        :param backup_name: saved backup file name
+        """
+        name = backup_name if backup_name else 'gd_backup.db'
+        try:
+            if path:
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                self._backup_path = os.path.join(os.path.abspath(path), name)
+            else:
+                home_path = os.path.expanduser('~')
+                save_path = 'documents/' + name
+                if sys.platform.lower() == 'win32':
+                    self._backup_path = os.path.join(home_path, save_path)
+                else:
+                    self._backup_path = os.path.join(home_path, name)
+        except os.error as e:
+            logger().exception(e)
+
+        try:
+            backup_conn = sq.connect(self._backup_path)
+            self._dict_db.backup(backup_conn)
+        except sq.Error as e:
+            logger().exception(e)
+        finally:
+            backup_conn.close()
+
+    def restore_backup(self, path):
+        """
+        Restore backup data.
+        The program copies the backup data to a temporary folder,
+        rename it to database.db then copies it back to self._db_path
+        then it deletes the temporary folder
+        :param path: path to db file
+        """
+        try:
+            sq.connect(path)
+            temp_dir = os.path.join(os.path.dirname(self._db_path), 'temp')
+            if not os.path.exists(temp_dir):
+                os.mkdir(temp_dir)
+
+            db_file = os.path.abspath(path)
+            copy(db_file, temp_dir)
+            old_temp_fn = os.path.join(temp_dir, QFileInfo(db_file).fileName())
+            new_temp_fn = os.path.join(temp_dir, 'database.db')
+            os.rename(old_temp_fn, new_temp_fn)
+            copy(new_temp_fn, os.path.dirname(self._db_path))
+        except sq.Error as e:
+            logger().exception(e)
+        except os.error as e:
+            logger().exception(e)
+        finally:
+            rmtree(temp_dir)
 
     @property
     def word_count(self):
