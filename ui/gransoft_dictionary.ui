@@ -289,7 +289,7 @@ font-size: 16px;</string>
      <normaloff>:/icons/images/load.png</normaloff>:/icons/images/load.png</iconset>
    </property>
    <property name="text">
-    <string>Load</string>
+    <string>Restore</string>
    </property>
   </action>
  </widget>

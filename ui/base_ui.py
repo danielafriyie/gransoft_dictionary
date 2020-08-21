@@ -182,7 +182,7 @@ class Ui_MainWindow(object):
         self.actionRefresh.setText(QCoreApplication.translate("MainWindow", u"Refresh", None))
         self.actionAbout_Qt.setText(QCoreApplication.translate("MainWindow", u"About Qt", None))
         self.actionBackup.setText(QCoreApplication.translate("MainWindow", u"Backup", None))
-        self.actionLoad.setText(QCoreApplication.translate("MainWindow", u"Load", None))
+        self.actionLoad.setText(QCoreApplication.translate("MainWindow", u"Restore", None))
         self.search_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"search", None))
         self.entries_label.setText("")
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
