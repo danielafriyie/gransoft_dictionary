@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
 from resources import DictDatabase
-from exceptions_ import DictDatabaseDoesNotExist
+from exceptions import DictDatabaseDoesNotExist
 
 
 class TestResources(unittest.TestCase):

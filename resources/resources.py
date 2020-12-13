@@ -19,11 +19,13 @@ import sqlite3 as sq
 import os
 import sys
 from shutil import copy, rmtree
+import re
 
-from exceptions_ import DictDatabaseDoesNotExist
+from exceptions import DictDatabaseDoesNotExist
 from logger import logger
 
 from PySide2.QtCore import QFileInfo
+from natsort import natsorted
 
 
 class DictDatabase:
@@ -50,32 +52,33 @@ class DictDatabase:
         search for word in the database
         :param word: word to look for in the database
         """
-        self._cursor.execute(f'SELECT * FROM entries WHERE wordentries LIKE "{word}" LIMIT 1;')
+        self._cursor.execute(f'SELECT * FROM entries WHERE wordentries LIKE "{word}%" LIMIT 1;')
         query_set = self._cursor.fetchall()
-
-        if not query_set:
-            self._cursor.execute(f'SELECT * FROM entries WHERE wordentries LIKE "{word}%" LIMIT 1;')
-            query_set = self._cursor.fetchall()
         return query_set
 
-    def add_new_word(self, word, word_type, definition):
+    def add_new_word(self, word, word_type, definition, commit=True):
         """
         adds new word to the database
         :param word: new word eg: food, book, aeroplane, etc.
         :param word_type: word type eg: noun, adverb, verb, etc.
         :param definition: word definition eg: united -> of unite
+        :param commit:
         """
         while True:
             try:
-                self._cursor.execute('INSERT INTO entries VALUES(NULL, ?, ?, ?);', (word, word_type, definition))
+                self._cursor.execute('INSERT INTO entries VALUES(?, ?, ?);', (word, word_type, definition))
                 break
             except sq.IntegrityError:
-                try:
-                    match, counter = word[:-3], int(word[-3:][1])
-                    word = f'{match}[{counter + 1}]'
-                except ValueError:
-                    word = f'{word}[2]'
-        self._dict_db.commit()
+                extension = re.findall(r'\s?-\s?[0-9]+', word)
+                extension_number = re.findall(r'[0-9]+', ''.join(extension))
+                if extension and extension_number:
+                    word = word.strip(''.join(extension))
+                    number = ''.join(extension_number)
+                    word += f' - {int(number) + 1}'
+                else:
+                    word += ' - 1'
+        if commit:
+            self._dict_db.commit()
 
     def delete_word(self, word):
         """
@@ -100,14 +103,62 @@ class DictDatabase:
         )
         self._dict_db.commit()
 
+    def truncate(self):
+        sql = 'DELETE FROM entries;'
+        self._cursor.execute(sql)
+        self._dict_db.commit()
+
+    @staticmethod
+    def to_integer(s):
+        if not isinstance(s, list):
+            return ValueError(f'{s} should be a list')
+        sups = {
+            '\u2070': '0',
+            '\xb9': '1',
+            '\xb2': '2',
+            '\xb3': '3',
+            '\u2074': '4',
+            '\u2075': '5',
+            '\u2076': '6',
+            '\u2077': '7',
+            '\u2078': '8',
+            '\u2079': '9'
+        }
+        number = ''.join((sups.get(char) for char in s))
+        return int(number)
+
+    @staticmethod
+    def to_superscript(s):
+        """
+        Converts string containing numbers to unicode superscript
+        :param s: string
+        :return: unicode
+        """
+        sups = {
+            u'0': u'\u2070',
+            u'1': u'\xb9',
+            u'2': u'\xb2',
+            u'3': u'\xb3',
+            u'4': u'\u2074',
+            u'5': u'\u2075',
+            u'6': u'\u2076',
+            u'7': u'\u2077',
+            u'8': u'\u2078',
+            u'9': u'\u2079'
+        }
+        return ''.join(sups.get(char, char) for char in s)
+
+    @property
+    def get_db(self):
+        return self._dict_db
+
     @property
     def all_words(self):
         """
         :return: generator object
         """
-        self._cursor.execute('SELECT wordentries FROM entries ORDER BY wordentries ASC;')
-        for word in self._cursor.fetchall():
-            yield word[0]
+        self._cursor.execute('SELECT wordentries FROM entries;')
+        return natsorted(word[0] for word in self._cursor.fetchall())
 
     def set_db_path(self, path=None):
         """

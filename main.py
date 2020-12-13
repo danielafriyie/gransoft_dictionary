@@ -16,7 +16,7 @@ along with Gransoft Dictionary.  If not, see <https://www.gnu.org/licenses/>.
 """
 __appname__ = "GranSoft Dictionary"
 __description__ = "English Dictionary Application"
-__version__ = "1.2"
+__version__ = "1.2.1"
 __author__ = "Afriyie Daniel"
 __email__ = "afriyiedaniel1@outlook.com"
 __web__ = "http://danielafriyie.top"
@@ -62,22 +62,15 @@ class BaseEditPopUpWindow(Ui_add_new_word, QWidget):
         self.save_btn.clicked.connect(self.save_btn_callback)
 
     def clear_entries(self):
-        self.word_entry.clear(), self.word_type_entry.clear(), self.word_definition_entry.clear()
+        self.word_entry.clear()
+        self.word_type_entry.clear()
+        self.word_definition_entry.clear()
 
     def set_icon(self):
         self.setWindowIcon(QIcon('ui/images/icon.png'))
 
     def save_btn_callback(self):
-        word = self.word_entry.text()
-        word_type = self.word_type_entry.text()
-        definition = self.word_definition_entry.toPlainText()
-
-        if not word or not definition:
-            QMessageBox.about(self, 'Action Required', 'Please fill all the necessary entries!')
-            return
-        database.add_new_word(word=word, word_type=word_type, definition=definition)
-        QMessageBox.about(self, 'Success', '%s added successfully!' % word)
-        self.clear_entries()
+        pass
 
     def fill_entries(self, word=None, word_type=None, definition=None):
         """
@@ -96,6 +89,18 @@ class AddNewWordWindow(BaseEditPopUpWindow):
     """add new word window"""
 
     window_title = 'Add New Word'
+
+    def save_btn_callback(self):
+        word = self.word_entry.text()
+        word_type = self.word_type_entry.text()
+        definition = self.word_definition_entry.toPlainText()
+
+        if not word or not definition:
+            QMessageBox.about(self, 'Action Required', 'Please fill all the necessary entries!')
+            return
+        database.add_new_word(word=word, word_type=word_type, definition=definition)
+        QMessageBox.about(self, 'Success', '%s added successfully!' % word)
+        self.clear_entries()
 
 
 class EditWordWindow(BaseEditPopUpWindow):
@@ -167,7 +172,7 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
                 word = _w.text()
                 query_set = database.search_word(word=word)
 
-            i, w, w_t, d = query_set[0]
+            w, w_t, d = query_set[0]
 
             self.edit_word_window = EditWordWindow()
             self.edit_word_window.fill_entries(word=w, word_type=w_t, definition=d)
@@ -241,7 +246,7 @@ class GransoftDictionary(Ui_MainWindow, QMainWindow):
 
         try:
             self.definition_listview.clear()
-            i, w, w_t, d = query_set[0]
+            w, w_t, d = query_set[0]
             self.definition_listview.addItem(w)
             self.definition_listview.addItem('\n')
             self.definition_listview.addItem(w_t)

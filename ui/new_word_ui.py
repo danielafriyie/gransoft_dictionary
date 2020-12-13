@@ -15,7 +15,6 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
 
-import image_icons_rc
 import new_word_icons_rc
 
 class Ui_add_new_word(object):
@@ -66,7 +65,7 @@ class Ui_add_new_word(object):
         self.cancel_btn.setObjectName(u"cancel_btn")
         self.cancel_btn.setMinimumSize(QSize(0, 35))
         icon = QIcon()
-        icon.addFile(u":/icons/images/cancel.jpg", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icons/images/delete2.png", QSize(), QIcon.Normal, QIcon.Off)
         self.cancel_btn.setIcon(icon)
 
         self.horizontalLayout.addWidget(self.cancel_btn)

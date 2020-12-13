@@ -80,7 +80,7 @@ font-size: 16px;</string>
        </property>
        <property name="icon">
         <iconset resource="new_word_icons.qrc">
-         <normaloff>:/icons/images/cancel.jpg</normaloff>:/icons/images/cancel.jpg</iconset>
+         <normaloff>:/icons/images/delete2.png</normaloff>:/icons/images/delete2.png</iconset>
        </property>
       </widget>
      </item>
@@ -106,7 +106,6 @@ font-size: 16px;</string>
   </layout>
  </widget>
  <resources>
-  <include location="../../../../../../../../home/daniel/Documents/Qt_Resources/image_icons.qrc"/>
   <include location="new_word_icons.qrc"/>
  </resources>
  <connections/>
