@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         MainWindow.setEnabled(True)
         MainWindow.resize(800, 600)
         icon = QIcon()
-        icon.addFile(u":/images/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icons/images/icon.ico", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(u"font-family: \"Times New Roman\", Times, serif;\n"
 "font-size: 16px;")

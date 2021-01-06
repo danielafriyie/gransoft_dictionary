@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="image_icons.qrc">
+    <normaloff>:/icons/images/icon.ico</normaloff>:/icons/images/icon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">margin: 0;
 padding: 0;
@@ -107,6 +111,7 @@ font-size: 16px;</string>
  </widget>
  <resources>
   <include location="new_word_icons.qrc"/>
+  <include location="image_icons.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -17,8 +17,8 @@
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/images/images/icon.png</normaloff>:/images/images/icon.png</iconset>
+   <iconset resource="image_icons.qrc">
+    <normaloff>:/icons/images/icon.ico</normaloff>:/icons/images/icon.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">font-family: &quot;Times New Roman&quot;, Times, serif;

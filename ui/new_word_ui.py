@@ -16,12 +16,16 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 import new_word_icons_rc
+import image_icons_rc
 
 class Ui_add_new_word(object):
     def setupUi(self, add_new_word):
         if not add_new_word.objectName():
             add_new_word.setObjectName(u"add_new_word")
         add_new_word.resize(400, 363)
+        icon = QIcon()
+        icon.addFile(u":/icons/images/icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        add_new_word.setWindowIcon(icon)
         add_new_word.setStyleSheet(u"margin: 0;\n"
 "padding: 0;\n"
 "font-family: \"Times New Roman\", Times, serif;\n"
@@ -64,18 +68,18 @@ class Ui_add_new_word(object):
         self.cancel_btn = QPushButton(add_new_word)
         self.cancel_btn.setObjectName(u"cancel_btn")
         self.cancel_btn.setMinimumSize(QSize(0, 35))
-        icon = QIcon()
-        icon.addFile(u":/icons/images/delete2.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.cancel_btn.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/images/delete2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.cancel_btn.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.cancel_btn)
 
         self.save_btn = QPushButton(add_new_word)
         self.save_btn.setObjectName(u"save_btn")
         self.save_btn.setMinimumSize(QSize(0, 35))
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/images/apply.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.save_btn.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/images/apply.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.save_btn.setIcon(icon2)
 
         self.horizontalLayout.addWidget(self.save_btn)
 
